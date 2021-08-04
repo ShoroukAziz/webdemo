@@ -37,6 +37,9 @@ import com.isfp.app.ws.ui.model.response.UserRest;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+//Testing git from sts
+
+
 @RestController
 @RequestMapping("/users")
 
@@ -147,7 +150,6 @@ public class UserController {
 		return  CollectionModel.of(addressesListRestModel);
 	}
 
-	
 	// get  addresses details of a user by address id
 	@GetMapping(path = "/{id}/address/{addressId}",
 				produces = { MediaType.APPLICATION_XML_VALUE
