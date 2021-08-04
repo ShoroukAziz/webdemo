@@ -37,8 +37,6 @@ import com.isfp.app.ws.ui.model.response.UserRest;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-//Testing git from sts
-
 
 @RestController
 @RequestMapping("/users")
