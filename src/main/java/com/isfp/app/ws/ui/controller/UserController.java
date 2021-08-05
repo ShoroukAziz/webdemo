@@ -169,4 +169,4 @@ public class UserController {
 	
 }
 
-//HATEOAS videos commit
+//remove fetch eager and change modelMapper to beanUtils in getUser in UserServiceImpl
