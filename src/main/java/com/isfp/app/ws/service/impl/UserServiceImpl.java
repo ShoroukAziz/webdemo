@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -84,7 +85,10 @@ public class UserServiceImpl implements UserService {
 
 		// if user not found throw an exception
 		if (userEntity == null) throw new UsernameNotFoundException(email);
-		return new ModelMapper().map(userEntity, UserDto.class);
+		UserDto userDto = new UserDto();
+		BeanUtils.copyProperties(userEntity, userDto);
+		return userDto;
+//		return new ModelMapper().map(userEntity, UserDto.class);
 	}
 
 	@Override
