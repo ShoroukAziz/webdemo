@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -44,7 +45,8 @@ public class UserEntity implements Serializable {
 	@Column(nullable = false)
 	private Boolean emailVerificationStatus = false;
 	
-	@OneToMany(mappedBy="userDetails" , cascade=(CascadeType.ALL) , fetch =(FetchType.EAGER))
+	// , fetch =(FetchType.EAGER)
+	@OneToMany(mappedBy="userDetails" , cascade=(CascadeType.ALL))
 	private List<AddressEntity> addresses;
 	
 
