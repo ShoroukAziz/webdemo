@@ -20,6 +20,10 @@ public interface UserRepository extends PagingAndSortingRepository<UserEntity, L
 	UserEntity findByUserId(String userId);
 	
 	
+	/*
+	 * Native SQL Examples
+	 */
+	
 	@Query(value="SELECT * FROM  users u WHERE u.email_verification_status = 'true' " ,
 			countQuery="SELECT count(*) from USERS u WHERE u.email_verification_status = 'true'",
 			nativeQuery=true)
@@ -50,4 +54,11 @@ public interface UserRepository extends PagingAndSortingRepository<UserEntity, L
 			@Param("userId") String userId);
 	
 	
+	/*
+	 * JPQL Examples
+	 */
+	
+
+	@Query("select user from UserEntity user where user.userId =:userId")
+	UserEntity findUserEntityByUserId(@Param("userId") String userId);
 }
