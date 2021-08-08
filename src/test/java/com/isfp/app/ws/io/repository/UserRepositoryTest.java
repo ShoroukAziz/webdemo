@@ -147,6 +147,22 @@ class UserRepositoryTest {
         assertNotNull(lastName);
 	}
 	
+	
+	
+	@Test 
+	final void testUpdateUserEntityEmailVerificationStatus()
+	{
+		boolean newEmailVerificationStatus = true;
+		userRepository.updateUserEntityEmailVerificationStatus(newEmailVerificationStatus, "57TFYFGY");
+		
+		UserEntity storedUserDetails = userRepository.findByUserId("57TFYFGY");
+		
+		boolean storedEmailVerificationStatus = storedUserDetails.getEmailVerificationStatus();
+		
+		assertTrue(storedEmailVerificationStatus == newEmailVerificationStatus);
+
+	}
+	
 	private void createRecords() {
 		UserEntity userEntity = new UserEntity();
 		userEntity.setFirstName("shorouk");
