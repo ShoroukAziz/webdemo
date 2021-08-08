@@ -2,8 +2,11 @@ package com.isfp.app.ws.io.repositories;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
@@ -40,4 +43,11 @@ public interface UserRepository extends PagingAndSortingRepository<UserEntity, L
 	List<Object[]> findUserFirstNameAndLastNameByKeyword(@Param("keyword") String keyword);
 
 
+	@Transactional
+	@Modifying
+	@Query(value="UPDATE users u set u.email_verification_status=:emailVerificationStatus where u.user_id=:userId", nativeQuery=true)
+	void updateUserEmailVerificationStatus(@Param("emailVerificationStatus") boolean emailVerificationStatus, 
+			@Param("userId") String userId);
+	
+	
 }
