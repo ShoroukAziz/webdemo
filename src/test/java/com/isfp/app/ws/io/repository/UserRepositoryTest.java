@@ -48,6 +48,19 @@ class UserRepositoryTest {
 	}
 	
 	@Test
+	final void testFindUserByLastName() {
+		String lastName = "abdelaziz";
+		List<UserEntity> userEntities = userRepository.findUserByLastName(lastName);
+		assertNotNull(userEntities);
+		assertTrue(userEntities.size()==1);
+		
+		UserEntity user = userEntities.get(0);
+		assertEquals(user.getLastName(),lastName);
+		
+	}
+	
+	
+	@Test
 	final void testFindUserByFirstName() {
 		String firstName = "shorouk";
 		List<UserEntity> userEntities = userRepository.findUserByFirstName(firstName);
@@ -63,7 +76,7 @@ class UserRepositoryTest {
 	private void createRecords() {
 		UserEntity userEntity = new UserEntity();
 		userEntity.setFirstName("shorouk");
-		userEntity.setLastName("Abdelaziz");
+		userEntity.setLastName("abdelaziz");
 		userEntity.setEmail("mail@mail.com");
 		userEntity.setUserId("djshfs887");
 		userEntity.setEncryptedPassword("8h5h7d");
