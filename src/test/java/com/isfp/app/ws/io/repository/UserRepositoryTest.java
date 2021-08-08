@@ -104,14 +104,26 @@ class UserRepositoryTest {
 		
 	}
 	
-	
+	@Test 
+	final void testUpdateUserEmailVerificationStatus()
+	{
+		boolean newEmailVerificationStatus = true;
+		userRepository.updateUserEmailVerificationStatus(newEmailVerificationStatus, "57TFYFGY");
+		
+		UserEntity storedUserDetails = userRepository.findByUserId("57TFYFGY");
+		
+		boolean storedEmailVerificationStatus = storedUserDetails.getEmailVerificationStatus();
+		
+		assertTrue(storedEmailVerificationStatus == newEmailVerificationStatus);
+
+	}
 	
 	private void createRecords() {
 		UserEntity userEntity = new UserEntity();
 		userEntity.setFirstName("shorouk");
 		userEntity.setLastName("abdelaziz");
 		userEntity.setEmail("mail@mail.com");
-		userEntity.setUserId("djshfs887");
+		userEntity.setUserId("57TFYFGY");
 		userEntity.setEncryptedPassword("8h5h7d");
 		userEntity.setEmailVerificationStatus(true);
 		
@@ -119,7 +131,7 @@ class UserRepositoryTest {
 		
 		List<AddressEntity> addresses = new ArrayList<>();
 		AddressEntity address = new AddressEntity();
-		address.setAddressId("jkdfhg6d");
+		address.setAddressId("ERTUJFDKG");
 		address.setCity("Alex");
 		address.setCountry("Egypt");
 		address.setPostalCode("12345");
