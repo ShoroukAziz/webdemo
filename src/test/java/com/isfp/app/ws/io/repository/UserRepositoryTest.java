@@ -85,6 +85,27 @@ class UserRepositoryTest {
 	}
 	
 	
+	@Test
+	final void testFindUserFirstNameAndLastNameByKeyword() {
+		String keyword = "sho";
+		List<Object[]> userEntities = userRepository.findUserFirstNameAndLastNameByKeyword(keyword);
+		assertNotNull(userEntities);
+		assertTrue(userEntities.size()==1);
+		
+		Object[] user = userEntities.get(0);
+		
+		String userFirstName = String.valueOf(user[0]);
+		String userLastName = String.valueOf(user[1]);
+		
+		assertNotNull(userFirstName);
+		assertNotNull(userLastName);
+		
+		
+		
+	}
+	
+	
+	
 	private void createRecords() {
 		UserEntity userEntity = new UserEntity();
 		userEntity.setFirstName("shorouk");
