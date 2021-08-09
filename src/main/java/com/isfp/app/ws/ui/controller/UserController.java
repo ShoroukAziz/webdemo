@@ -34,9 +34,6 @@ import com.isfp.app.ws.ui.model.response.RequestOperationName;
 import com.isfp.app.ws.ui.model.response.RequestOperationStatus;
 import com.isfp.app.ws.ui.model.response.UserRest;
 
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -55,10 +52,6 @@ public class UserController {
 	AddressService addressService;
 
 	// get user by id
-	@ApiOperation(value="Get user details endpoint" , notes= "${userController.getUser.APIOperationNotes}")
-	@ApiImplicitParams({
-		@ApiImplicitParam(name="authorization" , value ="${userController.authorizationHeader.description}" , paramType="header")
-	})
 	@GetMapping(path = "/{id}", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
 	public UserRest getUser(@PathVariable String id) {
 
@@ -86,9 +79,9 @@ public class UserController {
 	}
 
 	// update user
-	@ApiImplicitParams({
-		@ApiImplicitParam(name="authorization" , value ="${userController.authorizationHeader.description}" , paramType="header")
-	})
+//	@ApiImplicitParams({
+//		@ApiImplicitParam(name="authorization" , value ="${userController.authorizationHeader.description}" , paramType="header")
+//	})
 	@PutMapping(path = "/{id}", consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }
 							  , produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
 	
@@ -98,9 +91,9 @@ public class UserController {
 	}
 
 	// delete user
-	@ApiImplicitParams({
-		@ApiImplicitParam(name="authorization" , value ="${userController.authorizationHeader.description}" , paramType="header")
-	})
+//	@ApiImplicitParams({
+//		@ApiImplicitParam(name="authorization" , value ="${userController.authorizationHeader.description}" , paramType="header")
+//	})
 	@DeleteMapping(path = "/{id}", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
 	public OperationStatusModel deleteUser(@PathVariable String id) {
 
@@ -114,9 +107,9 @@ public class UserController {
 	}
 
 	// get all users	
-	@ApiImplicitParams({
-		@ApiImplicitParam(name="authorization" , value ="${userController.authorizationHeader.description}" , paramType="header")
-	})
+//	@ApiImplicitParams({
+//		@ApiImplicitParam(name="authorization" , value ="${userController.authorizationHeader.description}" , paramType="header")
+//	})
 	@GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE
 							,"application/hal+json" })
 	
@@ -134,9 +127,7 @@ public class UserController {
 	}
 
 	// get all addresses of a user by user by id
-	@ApiImplicitParams({
-		@ApiImplicitParam(name="authorization" , value ="${userController.authorizationHeader.description}" , paramType="header")
-	})
+
 	@GetMapping(path = "/{id}/address", produces = { MediaType.APPLICATION_XML_VALUE
 													, MediaType.APPLICATION_JSON_VALUE
 													,"application/hal+json"})
@@ -168,9 +159,9 @@ public class UserController {
 	}
 
 	// get  addresses details of a user by address id
-	@ApiImplicitParams({
-		@ApiImplicitParam(name="authorization" , value ="${userController.authorizationHeader.description}" , paramType="header")
-	})
+//	@ApiImplicitParams({
+//		@ApiImplicitParam(name="authorization" , value ="${userController.authorizationHeader.description}" , paramType="header")
+//	})
 	@GetMapping(path = "/{id}/address/{addressId}",
 				produces = { MediaType.APPLICATION_XML_VALUE
 							,MediaType.APPLICATION_JSON_VALUE,
