@@ -43,7 +43,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter{
         .permitAll()
         .antMatchers(HttpMethod.GET,SecurityConstants.SIGN_UP_URL)
         .permitAll()
-        .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**")
+        .antMatchers("/swagger-ui/**", "/v3/api-docs/**" , "/swagger-ui.html/**")
         .permitAll()
         .anyRequest().authenticated().and()
         .addFilter(getAuthenticationFilter())
@@ -65,6 +65,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter{
     	filter.setFilterProcessesUrl("/users/login");
     	return filter;
     }
+    
+    
     
     @Bean
     public CorsConfigurationSource corsConfigurationSource()

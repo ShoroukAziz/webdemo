@@ -34,6 +34,8 @@ import com.isfp.app.ws.ui.model.response.RequestOperationName;
 import com.isfp.app.ws.ui.model.response.RequestOperationStatus;
 import com.isfp.app.ws.ui.model.response.UserRest;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -42,7 +44,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RestController
 @RequestMapping("/users")
 
-// to convert outgoing Java object into a JSON response
+@SecurityRequirement(name = "Authorization")
+
 public class UserController {
 
 	@Autowired
@@ -79,9 +82,6 @@ public class UserController {
 	}
 
 	// update user
-//	@ApiImplicitParams({
-//		@ApiImplicitParam(name="authorization" , value ="${userController.authorizationHeader.description}" , paramType="header")
-//	})
 	@PutMapping(path = "/{id}", consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }
 							  , produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
 	
@@ -91,9 +91,6 @@ public class UserController {
 	}
 
 	// delete user
-//	@ApiImplicitParams({
-//		@ApiImplicitParam(name="authorization" , value ="${userController.authorizationHeader.description}" , paramType="header")
-//	})
 	@DeleteMapping(path = "/{id}", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
 	public OperationStatusModel deleteUser(@PathVariable String id) {
 
@@ -107,9 +104,6 @@ public class UserController {
 	}
 
 	// get all users	
-//	@ApiImplicitParams({
-//		@ApiImplicitParam(name="authorization" , value ="${userController.authorizationHeader.description}" , paramType="header")
-//	})
 	@GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE
 							,"application/hal+json" })
 	
@@ -159,9 +153,6 @@ public class UserController {
 	}
 
 	// get  addresses details of a user by address id
-//	@ApiImplicitParams({
-//		@ApiImplicitParam(name="authorization" , value ="${userController.authorizationHeader.description}" , paramType="header")
-//	})
 	@GetMapping(path = "/{id}/address/{addressId}",
 				produces = { MediaType.APPLICATION_XML_VALUE
 							,MediaType.APPLICATION_JSON_VALUE,
@@ -182,4 +173,3 @@ public class UserController {
 	
 }
 
-//remove fetch eager and change modelMapper to beanUtils in getUser in UserServiceImpl
