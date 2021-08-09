@@ -37,7 +37,7 @@ import com.isfp.app.ws.ui.model.response.UserRest;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-
+//@CrossOrigin(origins="*")
 @RestController
 @RequestMapping("/users")
 
@@ -99,9 +99,8 @@ public class UserController {
 		return returnValue;
 	}
 
-	// get all users
-	@GetMapping(produces = { MediaType.APPLICATION_XML_VALUE
-							, MediaType.APPLICATION_JSON_VALUE
+	// get all users	
+	@GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE
 							,"application/hal+json" })
 	
 	public List<UserRest> getUsers(@RequestParam(value = "page", defaultValue = "0") int page,

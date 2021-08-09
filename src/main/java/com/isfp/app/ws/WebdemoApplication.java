@@ -10,7 +10,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.isfp.app.ws.security.AppProperties;
 
 
-
 @SpringBootApplication
 public class WebdemoApplication extends SpringBootServletInitializer {
 	
@@ -38,5 +37,6 @@ public class WebdemoApplication extends SpringBootServletInitializer {
 	public AppProperties getAppProperties() {
 		return new AppProperties();
 	}
+
 
 }
