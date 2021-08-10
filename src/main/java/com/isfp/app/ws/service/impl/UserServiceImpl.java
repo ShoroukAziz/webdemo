@@ -1,6 +1,8 @@
 package com.isfp.app.ws.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -9,14 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.isfp.app.ws.exceptions.UserServiceException;
+import com.isfp.app.ws.io.entity.RoleEntity;
 import com.isfp.app.ws.io.entity.UserEntity;
+import com.isfp.app.ws.io.repositories.RoleRepository;
 import com.isfp.app.ws.io.repositories.UserRepository;
 import com.isfp.app.ws.security.UserPrincipal;
 import com.isfp.app.ws.service.UserService;
@@ -36,6 +39,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	@Autowired
+	RoleRepository roleRepository;
 
 	@Override
 	public UserDto createUser(UserDto user) {
@@ -60,6 +66,16 @@ public class UserServiceImpl implements UserService {
 		//set the public id and encrypted password of the new entity
 		userEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		userEntity.setUserId(utils.generateUserId(30));
+		
+		//Set Roles
+		Collection<RoleEntity> roleEntities = new HashSet<>();
+		for(String role: user.getRoles()) {
+			RoleEntity roleEntity = roleRepository.findByName(role);
+			if(roleEntity != null) {
+				roleEntities.add(roleEntity);
+			}
+		}
+		userEntity.setRoles(roleEntities);
 
 		// save the new entity into the database
 		UserEntity storedUserDetails = userRepository.save(userEntity);

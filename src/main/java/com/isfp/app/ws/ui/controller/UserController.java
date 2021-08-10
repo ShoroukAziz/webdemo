@@ -1,6 +1,8 @@
 package com.isfp.app.ws.ui.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -11,7 +13,9 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.annotation.Secured;
+//import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.isfp.app.ws.exceptions.UserServiceException;
 import com.isfp.app.ws.service.AddressService;
 import com.isfp.app.ws.service.UserService;
+import com.isfp.app.ws.shared.Roles;
 import com.isfp.app.ws.shared.dto.AddressDto;
 import com.isfp.app.ws.shared.dto.UserDto;
 import com.isfp.app.ws.ui.model.request.UserDetailsRequestModel;
@@ -56,6 +61,7 @@ public class UserController {
 	AddressService addressService;
 
 	// get user by id
+	@PostAuthorize("hasRole('ADMIN') or returnObject.userId == principal.userId")
 	@ApiOperation(value="Get user details endpoint" , notes= "${userController.getUser.APIOperationNotes}")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name="authorization" , value ="${userController.authorizationHeader.description}" , paramType="header")
@@ -77,6 +83,7 @@ public class UserController {
 
 		ModelMapper modelMapper = new ModelMapper();
 		UserDto userDto = modelMapper.map(userDetails, UserDto.class);
+		userDto.setRoles(new HashSet<>(Arrays.asList(Roles.ROLE_USER.name())));
 
 		UserDto createdUser = userService.createUser(userDto);
 
@@ -99,7 +106,10 @@ public class UserController {
 	}
 
 	// delete user
-	@Secured("ROLE_ADMIN")
+//	@Secured("ROLE_ADMIN")
+//	@PreAuthorize("hasAutority('DELETE_AUTHORITY')")
+	
+	@PreAuthorize("hasRole('ADMIN') or #id == principal.userId")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name="authorization" , value ="${userController.authorizationHeader.description}" , paramType="header")
 	})

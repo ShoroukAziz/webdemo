@@ -17,6 +17,7 @@ import com.isfp.app.ws.io.entity.RoleEntity;
 import com.isfp.app.ws.io.entity.UserEntity;
 import com.isfp.app.ws.io.repositories.RoleRepository;
 import com.isfp.app.ws.io.repositories.UserRepository;
+import com.isfp.app.ws.shared.Roles;
 import com.isfp.app.ws.shared.Utils;
 
 @Component
@@ -46,8 +47,8 @@ public class InitialUserSetup {
 		AuthorityEntity writeAuthority = createAuthority("WRITE_AUTHORITY");
 		AuthorityEntity deleteAuthority = createAuthority("DELETE_AUTHORITY");
 		
-		RoleEntity roleUser  = createRole("ROLE_USER", Arrays.asList(readAuthority, writeAuthority));
-		RoleEntity roleAdmin = createRole("ROLE_ADMIN", Arrays.asList(readAuthority, writeAuthority,deleteAuthority));
+		createRole(Roles.ROLE_USER.name(), Arrays.asList(readAuthority, writeAuthority));
+		RoleEntity roleAdmin = createRole(Roles.ROLE_ADMIN.name(), Arrays.asList(readAuthority, writeAuthority,deleteAuthority));
 		
 		if(roleAdmin== null) return;
 		

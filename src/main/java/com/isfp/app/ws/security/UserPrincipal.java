@@ -1,8 +1,7 @@
 package com.isfp.app.ws.security;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,17 +18,30 @@ public class UserPrincipal implements UserDetails {
 	 */
 	private static final long serialVersionUID = 8866210878250436001L;
 	
-	UserEntity userEntity;
+	private UserEntity userEntity;
+	private String userId;
+	
 
 	public UserPrincipal(UserEntity userEntity) {
 		this.userEntity = userEntity;
+		this.userId = userEntity.getUserId();
 	}
+	
+	public String getUserId() {
+		return userId;
+	}
+
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 			
-		List<GrantedAuthority> authorities = new ArrayList<>();
-		List<AuthorityEntity> authorityEntities = new ArrayList<>();
+		Collection<GrantedAuthority> authorities = new HashSet<>();
+		Collection<AuthorityEntity> authorityEntities =  new HashSet<>();
 		
 		//get user roles
 		Collection<RoleEntity> roles = userEntity.getRoles();

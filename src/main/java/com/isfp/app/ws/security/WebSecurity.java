@@ -19,7 +19,7 @@ import com.isfp.app.ws.io.repositories.UserRepository;
 import com.isfp.app.ws.service.UserService;
 
 
-@EnableGlobalMethodSecurity(securedEnabled=true)
+@EnableGlobalMethodSecurity(securedEnabled=true , prePostEnabled = true)
 @EnableWebSecurity
 public class WebSecurity extends WebSecurityConfigurerAdapter{
 	
@@ -49,7 +49,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter{
         .permitAll()
 //      .antMatchers(HttpMethod.GET, "/users/**").hasAnyRole("ADMIN" , "USER")
 //      .antMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
-//        .antMatchers(HttpMethod.DELETE, "/users/**").hasAuthority("DELETE_AUTHORITY")
+//      .antMatchers(HttpMethod.DELETE, "/users/**").hasAuthority("DELETE_AUTHORITY")
         .anyRequest().authenticated().and()
         .addFilter(getAuthenticationFilter())
         .addFilter(new AuthorizationFilter(authenticationManager(),userRepository))
