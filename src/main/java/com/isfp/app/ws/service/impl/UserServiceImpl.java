@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import com.isfp.app.ws.exceptions.UserServiceException;
 import com.isfp.app.ws.io.entity.UserEntity;
 import com.isfp.app.ws.io.repositories.UserRepository;
+import com.isfp.app.ws.security.UserPrincipal;
 import com.isfp.app.ws.service.UserService;
 import com.isfp.app.ws.shared.dto.AddressDto;
 import com.isfp.app.ws.shared.dto.UserDto;
@@ -75,8 +76,9 @@ public class UserServiceImpl implements UserService {
 		// if user not found throw an exception
 		if (userEntity == null)
 			throw new UsernameNotFoundException(email);
-
-		return new User(userEntity.getEmail(), userEntity.getEncryptedPassword(), new ArrayList<>());
+		
+		return new UserPrincipal(userEntity);
+//		return new User(userEntity.getEmail(), userEntity.getEncryptedPassword(), new ArrayList<>());
 	}
 
 	@Override

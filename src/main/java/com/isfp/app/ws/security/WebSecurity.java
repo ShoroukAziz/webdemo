@@ -14,6 +14,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.isfp.app.ws.io.repositories.UserRepository;
 import com.isfp.app.ws.service.UserService;
 
 
@@ -24,10 +25,12 @@ public class WebSecurity extends WebSecurityConfigurerAdapter{
 	
 	private final UserService userDetailsService;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
+	private final UserRepository userRepository;
 	
-    public WebSecurity(UserService userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public WebSecurity(UserService userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder , UserRepository userRepository) {
         this.userDetailsService = userDetailsService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.userRepository = userRepository;
     }
     
 
@@ -41,13 +44,13 @@ public class WebSecurity extends WebSecurityConfigurerAdapter{
         .permitAll()
         .antMatchers(SecurityConstants.H2_CONSOLE)
         .permitAll()
-        .antMatchers(HttpMethod.GET,SecurityConstants.SIGN_UP_URL)
-        .permitAll()
         .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**")
         .permitAll()
+        .antMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
+        .antMatchers(HttpMethod.DELETE, "/users/**").hasAuthority("DELETE_AUTHORITY")
         .anyRequest().authenticated().and()
         .addFilter(getAuthenticationFilter())
-        .addFilter(new AuthorizationFilter(authenticationManager()))
+        .addFilter(new AuthorizationFilter(authenticationManager(),userRepository))
         .sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		

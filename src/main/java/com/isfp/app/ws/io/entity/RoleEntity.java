@@ -37,6 +37,13 @@ public class RoleEntity implements Serializable {
 			joinColumns=@JoinColumn(name="roles_id" , referencedColumnName="id" ) ,
 			inverseJoinColumns=@JoinColumn(name="authorties_id" , referencedColumnName="id" ))	 
 	private Collection<AuthorityEntity> authorities;
+	
+	public RoleEntity( ) {
+	}
+
+	public RoleEntity(String name) {
+		this.name = name;
+	}
 
 	public long getId() {
 		return id;
