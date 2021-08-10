@@ -16,8 +16,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.isfp.app.ws.service.UserService;
 
-
-
 @EnableWebSecurity
 public class WebSecurity extends WebSecurityConfigurerAdapter{
 	
@@ -41,9 +39,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter{
         .permitAll()
         .antMatchers(SecurityConstants.H2_CONSOLE)
         .permitAll()
-        .antMatchers(HttpMethod.GET,SecurityConstants.SIGN_UP_URL)
-        .permitAll()
-        .antMatchers("/swagger-ui/**", "/v3/api-docs/**" , "/swagger-ui.html/**")
+        .antMatchers("/swagger-ui/**", "/v3/api-docs/**" , "/swagger-ui*")
         .permitAll()
         .anyRequest().authenticated().and()
         .addFilter(getAuthenticationFilter())

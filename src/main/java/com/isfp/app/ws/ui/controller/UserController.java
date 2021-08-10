@@ -34,6 +34,7 @@ import com.isfp.app.ws.ui.model.response.RequestOperationName;
 import com.isfp.app.ws.ui.model.response.RequestOperationStatus;
 import com.isfp.app.ws.ui.model.response.UserRest;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 
@@ -43,7 +44,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 //@CrossOrigin(origins="*")
 @RestController
 @RequestMapping("/users")
-
 @SecurityRequirement(name = "Authorization")
 
 public class UserController {
@@ -55,6 +55,7 @@ public class UserController {
 	AddressService addressService;
 
 	// get user by id
+	@Operation(summary="${userController.getUser.APIOperationNotes}" , tags="Retrive User/s")
 	@GetMapping(path = "/{id}", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
 	public UserRest getUser(@PathVariable String id) {
 
@@ -63,6 +64,7 @@ public class UserController {
 	}
 
 	// Sign up
+	@Operation(summary="${userController.createUser.APIOperationNotes}")
 	@PostMapping(consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }, produces = {
 			MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
 	public UserRest createUser(@RequestBody UserDetailsRequestModel userDetails) throws Exception {
@@ -82,6 +84,7 @@ public class UserController {
 	}
 
 	// update user
+	@Operation(summary="${userController.updateUser.APIOperationNotes}")
 	@PutMapping(path = "/{id}", consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }
 							  , produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
 	
@@ -91,6 +94,7 @@ public class UserController {
 	}
 
 	// delete user
+	@Operation(summary="${userController.deleteUser.APIOperationNotes}")
 	@DeleteMapping(path = "/{id}", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
 	public OperationStatusModel deleteUser(@PathVariable String id) {
 
@@ -104,6 +108,7 @@ public class UserController {
 	}
 
 	// get all users	
+	@Operation(summary="${userController.getUsers.APIOperationNotes}" , tags="Retrive User/s")
 	@GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE
 							,"application/hal+json" })
 	
@@ -121,8 +126,8 @@ public class UserController {
 	}
 
 	// get all addresses of a user by user by id
-
-	@GetMapping(path = "/{id}/address", produces = { MediaType.APPLICATION_XML_VALUE
+	@Operation(summary="${userController.getUserAddresses.APIOperationNotes}", tags="User Addresses")
+	@GetMapping(path = "/{id}/addresses", produces = { MediaType.APPLICATION_XML_VALUE
 													, MediaType.APPLICATION_JSON_VALUE
 													,"application/hal+json"})
 	
@@ -153,7 +158,8 @@ public class UserController {
 	}
 
 	// get  addresses details of a user by address id
-	@GetMapping(path = "/{id}/address/{addressId}",
+	@Operation(summary="${userController.getUserAddress.APIOperationNotes}" , tags="User Addresses")
+	@GetMapping(path = "/{id}/addresses/{addressId}",
 				produces = { MediaType.APPLICATION_XML_VALUE
 							,MediaType.APPLICATION_JSON_VALUE,
 							"application/hal+json"})

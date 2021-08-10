@@ -58,8 +58,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 	@Override
 	protected void successfulAuthentication (HttpServletRequest req , HttpServletResponse res,
 												FilterChain chain, Authentication auth) throws IOException, ServletException{
-		String userName = ((User) auth.getPrincipal()).getUsername();
 		
+		String userName = ((User) auth.getPrincipal()).getUsername();
 		String token = Jwts.builder()
 				.setSubject(userName)
 				.setExpiration(new Date(System.currentTimeMillis()+SecurityConstants.EXPIRATION_TIME))
