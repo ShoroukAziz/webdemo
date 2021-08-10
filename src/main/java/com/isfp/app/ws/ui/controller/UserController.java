@@ -11,6 +11,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -98,6 +99,7 @@ public class UserController {
 	}
 
 	// delete user
+	@Secured("ROLE_ADMIN")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name="authorization" , value ="${userController.authorizationHeader.description}" , paramType="header")
 	})
