@@ -8,7 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
+import javax.persistence.ForeignKey;
 
 @Entity(name="addresses")
 public class AddressEntity implements Serializable {
@@ -41,7 +41,7 @@ public class AddressEntity implements Serializable {
 	private String type;
 	
 	@ManyToOne()
-	@JoinColumn(name="users_id")
+	@JoinColumn(name="users_id" , foreignKey = @ForeignKey(name = "My_Custom_Name"))
 	private UserEntity userDetails;
 
 	public long getId() {

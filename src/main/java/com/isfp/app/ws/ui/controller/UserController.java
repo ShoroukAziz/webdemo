@@ -1,5 +1,6 @@
 package com.isfp.app.ws.ui.controller;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.isfp.app.ws.exceptions.UserServiceException;
+import com.isfp.app.ws.reports.ReportService;
 import com.isfp.app.ws.service.AddressService;
 import com.isfp.app.ws.service.UserService;
 import com.isfp.app.ws.shared.Roles;
@@ -43,6 +45,7 @@ import com.isfp.app.ws.ui.model.response.UserRest;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import net.sf.jasperreports.engine.JRException;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -199,6 +202,16 @@ public class UserController {
 		
 		return EntityModel.of(AddressRestModel);
 
+	}
+	
+	
+	@Autowired
+	ReportService reportService;
+	
+	
+	@GetMapping("/report/{format}")
+	public String generateReport(@PathVariable String format) throws FileNotFoundException, JRException {
+		return reportService.exportReport(format);
 	}
 	
 }

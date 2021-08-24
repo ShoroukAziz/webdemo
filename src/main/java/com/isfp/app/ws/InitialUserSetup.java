@@ -60,7 +60,7 @@ public class InitialUserSetup {
 		adminUser.setEncryptedPassword(bCryptPasswordEncoder.encode("123"));
 		adminUser.setRoles(Arrays.asList(roleAdmin));
 		
-		userRepository.save(adminUser);
+		//userRepository.save(adminUser);
 	}
 	
 	@Transactional

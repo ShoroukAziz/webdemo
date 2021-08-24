@@ -43,6 +43,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter{
 		.csrf().disable().authorizeRequests()
         .antMatchers(HttpMethod.POST,SecurityConstants.SIGN_UP_URL)
         .permitAll()
+        .antMatchers(HttpMethod.GET,"/users/report/*")
+        .permitAll()
         .antMatchers(SecurityConstants.H2_CONSOLE)
         .permitAll()
         .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**")
