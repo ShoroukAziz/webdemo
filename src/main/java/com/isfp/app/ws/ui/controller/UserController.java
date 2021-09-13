@@ -1,5 +1,8 @@
 package com.isfp.app.ws.ui.controller;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,7 +11,6 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.isfp.app.ws.exceptions.UserServiceException;
 import com.isfp.app.ws.reports.ReportService;
+import com.isfp.app.ws.security.AppProperties;
 import com.isfp.app.ws.service.AddressService;
 import com.isfp.app.ws.service.UserService;
 import com.isfp.app.ws.shared.Roles;
@@ -47,9 +50,6 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import net.sf.jasperreports.engine.JRException;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 //@CrossOrigin(origins="*")
 @RestController
 @RequestMapping("/users")
@@ -65,10 +65,9 @@ public class UserController {
 
 	// get user by id
 	@PostAuthorize("hasRole('ADMIN') or returnObject.userId == principal.userId")
-	@ApiOperation(value="Get user details endpoint" , notes= "${userController.getUser.APIOperationNotes}")
+	@ApiOperation(value = "Get user details endpoint", notes = "${userController.getUser.APIOperationNotes}")
 	@ApiImplicitParams({
-		@ApiImplicitParam(name="authorization" , value ="${userController.authorizationHeader.description}" , paramType="header")
-	})
+			@ApiImplicitParam(name = "authorization", value = "${userController.authorizationHeader.description}", paramType = "header") })
 	@GetMapping(path = "/{id}", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
 	public UserRest getUser(@PathVariable String id) {
 
@@ -98,24 +97,24 @@ public class UserController {
 
 	// update user
 	@ApiImplicitParams({
-		@ApiImplicitParam(name="authorization" , value ="${userController.authorizationHeader.description}" , paramType="header")
-	})
-	@PutMapping(path = "/{id}", consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }
-							  , produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
-	
+			@ApiImplicitParam(name = "authorization", value = "${userController.authorizationHeader.description}", paramType = "header") })
+	@PutMapping(path = "/{id}", consumes = { MediaType.APPLICATION_XML_VALUE,
+			MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_XML_VALUE,
+					MediaType.APPLICATION_JSON_VALUE })
+
 	public UserRest updateUser(@PathVariable String id, @RequestBody UserDetailsRequestModel userDetails) {
 
-		return new ModelMapper().map(userService.updateUser(id, new ModelMapper().map(userDetails, UserDto.class)), UserRest.class);
+		return new ModelMapper().map(userService.updateUser(id, new ModelMapper().map(userDetails, UserDto.class)),
+				UserRest.class);
 	}
 
 	// delete user
 //	@Secured("ROLE_ADMIN")
 //	@PreAuthorize("hasAutority('DELETE_AUTHORITY')")
-	
+
 	@PreAuthorize("hasRole('ADMIN') or #id == principal.userId")
 	@ApiImplicitParams({
-		@ApiImplicitParam(name="authorization" , value ="${userController.authorizationHeader.description}" , paramType="header")
-	})
+			@ApiImplicitParam(name = "authorization", value = "${userController.authorizationHeader.description}", paramType = "header") })
 	@DeleteMapping(path = "/{id}", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
 	public OperationStatusModel deleteUser(@PathVariable String id) {
 
@@ -128,13 +127,11 @@ public class UserController {
 		return returnValue;
 	}
 
-	// get all users	
+	// get all users
 	@ApiImplicitParams({
-		@ApiImplicitParam(name="authorization" , value ="${userController.authorizationHeader.description}" , paramType="header")
-	})
-	@GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE
-							,"application/hal+json" })
-	
+			@ApiImplicitParam(name = "authorization", value = "${userController.authorizationHeader.description}", paramType = "header") })
+	@GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE, "application/hal+json" })
+
 	public List<UserRest> getUsers(@RequestParam(value = "page", defaultValue = "0") int page,
 			@RequestParam(value = "limit", defaultValue = "25") int limit) {
 
@@ -150,13 +147,11 @@ public class UserController {
 
 	// get all addresses of a user by user by id
 	@ApiImplicitParams({
-		@ApiImplicitParam(name="authorization" , value ="${userController.authorizationHeader.description}" , paramType="header")
-	})
-	@GetMapping(path = "/{id}/address", produces = { MediaType.APPLICATION_XML_VALUE
-													, MediaType.APPLICATION_JSON_VALUE
-													,"application/hal+json"})
-	
-	public CollectionModel <AddressRest> getUserAddresses(@PathVariable String id) {
+			@ApiImplicitParam(name = "authorization", value = "${userController.authorizationHeader.description}", paramType = "header") })
+	@GetMapping(path = "/{id}/address", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE,
+			"application/hal+json" })
+
+	public CollectionModel<AddressRest> getUserAddresses(@PathVariable String id) {
 
 		List<AddressRest> addressesListRestModel = new ArrayList<>();
 
@@ -170,50 +165,54 @@ public class UserController {
 			addressesListRestModel = new ModelMapper().map(addressDto, listType);
 
 		}
-		
-		for(AddressRest addressRest :addressesListRestModel) {
-			Link addressLink = linkTo(methodOn(UserController.class).getUserAddress(id, addressRest.getAddressId())).withSelfRel();
+
+		for (AddressRest addressRest : addressesListRestModel) {
+			Link addressLink = linkTo(methodOn(UserController.class).getUserAddress(id, addressRest.getAddressId()))
+					.withSelfRel();
 			addressRest.add(addressLink);
-			
+
 			Link userLink = linkTo(methodOn(UserController.class).getUser(id)).withRel("user");
 			addressRest.add(userLink);
 		}
 
-		return  CollectionModel.of(addressesListRestModel);
+		return CollectionModel.of(addressesListRestModel);
 	}
 
-	// get  addresses details of a user by address id
+	// get addresses details of a user by address id
 	@ApiImplicitParams({
-		@ApiImplicitParam(name="authorization" , value ="${userController.authorizationHeader.description}" , paramType="header")
-	})
-	@GetMapping(path = "/{id}/address/{addressId}",
-				produces = { MediaType.APPLICATION_XML_VALUE
-							,MediaType.APPLICATION_JSON_VALUE,
-							"application/hal+json"})
-	
-	public EntityModel<AddressRest>  getUserAddress(@PathVariable String id , @PathVariable String addressId) {
-		
+			@ApiImplicitParam(name = "authorization", value = "${userController.authorizationHeader.description}", paramType = "header") })
+	@GetMapping(path = "/{id}/address/{addressId}", produces = { MediaType.APPLICATION_XML_VALUE,
+			MediaType.APPLICATION_JSON_VALUE, "application/hal+json" })
+
+	public EntityModel<AddressRest> getUserAddress(@PathVariable String id, @PathVariable String addressId) {
+
 		Link addressLink = linkTo(methodOn(UserController.class).getUserAddress(id, addressId)).withSelfRel();
 		Link userLink = linkTo(UserController.class).slash(id).withRel("user");
 		Link addressesLink = linkTo(methodOn(UserController.class).getUserAddresses(addressId)).withRel("addresses");
-		
-		AddressRest AddressRestModel =new ModelMapper().map(addressService.getAddress(addressId), AddressRest.class);
+
+		AddressRest AddressRestModel = new ModelMapper().map(addressService.getAddress(addressId), AddressRest.class);
 		AddressRestModel.add(addressLink).add(userLink).add(addressesLink);
-		
+
 		return EntityModel.of(AddressRestModel);
 
 	}
-	
-	
+
 	@Autowired
 	ReportService reportService;
-	
-	
+
 	@GetMapping("/report/{format}")
 	public String generateReport(@PathVariable String format) throws FileNotFoundException, JRException {
 		return reportService.exportReport(format);
 	}
-	
+
+	@Autowired
+	AppProperties appProperties;
+
+	@GetMapping("/xyz/message")
+	public String getUrl() {
+		return appProperties.getUrl();
+	}
+
 }
 
 //remove fetch eager and change modelMapper to beanUtils in getUser in UserServiceImpl
