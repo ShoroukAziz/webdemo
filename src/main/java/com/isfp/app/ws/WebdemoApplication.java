@@ -4,11 +4,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import com.isfp.app.ws.security.AppProperties;
-
+@RefreshScope
 @SpringBootApplication
 public class WebdemoApplication extends SpringBootServletInitializer {
 
@@ -30,11 +30,6 @@ public class WebdemoApplication extends SpringBootServletInitializer {
 	@Bean
 	public SpringApplicationContext springApplicationContext() {
 		return new SpringApplicationContext();
-	}
-
-	@Bean
-	public AppProperties getAppProperties() {
-		return new AppProperties();
 	}
 
 }
